@@ -1,0 +1,17 @@
+/* TEAM */
+  Author: Ahsan Mahmood
+  Site: https://aoneahsan.com
+  GitHub: https://github.com/aoneahsan
+  npm: https://www.npmjs.com/~aoneahsan
+  Location: Pakistan
+
+/* PROJECT */
+  Name: webauthn-server-buildkit
+  Description: Framework-independent TypeScript WebAuthn / FIDO2 server library.
+  npm: https://www.npmjs.com/package/webauthn-server-buildkit
+  Source: https://github.com/aoneahsan/webauthn-server-buildkit
+  License: MIT
+
+/* SITE */
+  Built with: Docusaurus
+  Hosting: Firebase Hosting + GitHub Pages

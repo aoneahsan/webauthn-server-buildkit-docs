@@ -1,0 +1,85 @@
+# webauthn-server-buildkit — full reference for language models
+
+> A framework-independent WebAuthn / FIDO2 / passkeys SERVER library for
+> TypeScript and Node.js. npm: webauthn-server-buildkit. License: MIT.
+> Author: Ahsan Mahmood (https://aoneahsan.com). Current version: 2.3.0.
+> Node.js >= 24.13.0. One runtime dependency: cbor-x.
+
+This file expands llms.txt with the concrete public API so an LLM can answer
+"how do I do X with webauthn-server-buildkit" accurately. Everything below
+reflects the real, shipping API.
+
+## Install & import
+
+    npm install webauthn-server-buildkit
+    import { WebAuthnServer, MemoryStorageAdapter } from 'webauthn-server-buildkit';
+
+## Construction
+
+    new WebAuthnServer({
+      rpName, rpID, origin, encryptionSecret,   // required; encryptionSecret >= 32 chars
+      storageAdapter?, sessionDuration?, attestationType?,
+      enableMobileAttestation?, enforceChallengeStore?, allowCrossOriginIframe?,
+      originVerifier?, userVerification?, authenticatorSelection?, supportedAlgorithms?,
+      challengeSize?, timeout?, preferredAuthenticatorType?, metadataService?,
+      requireTrustedAttestation?, debug?, logger?,
+    })
+
+Defaults: attestationType 'none', enforceChallengeStore true, allowCrossOriginIframe
+false, requireTrustedAttestation false, userVerification 'preferred',
+supportedAlgorithms [ES256, RS256], challengeSize 32, timeout 60000,
+sessionDuration 86400000 (24h), enableMobileAttestation false.
+
+## WebAuthnServer methods
+
+- createRegistrationOptions(user, params?) -> { options, challenge, webAuthnUserId }
+- verifyRegistration(response, expectedChallenge, expectedOrigin?, { existingCredentialIds? }?) -> { verified, registrationInfo? }
+- createAuthenticationOptions(params?) -> { options, challenge }
+- verifyAuthentication(response, expectedChallenge, credential, expectedOrigin?) -> { verified, authenticationInfo? }
+- createSession(userId, credentialId, userVerified, additionalData?) -> string (encrypted token)
+- validateSession(token) -> { valid, sessionData?, sessionId? }
+- refreshSession(token) -> string
+- revokeSession(token) -> void
+- revokeUserSessions(userId) -> void
+- cleanup() -> void
+- getStorageAdapter() -> StorageAdapter | undefined
+
+## Attestation
+
+Formats verified: none, packed (self + x5c), fido-u2f, android-key, tpm,
+android-safetynet, apple. attestationVerified is true ONLY when trust-anchored —
+apple via the bundled APPLE_WEBAUTHN_ROOT_CA_PEM, the chain formats via a
+metadataService (FIDO MDS). Use StaticMetadataService({ defaultRoots: [...] }).
+Set requireTrustedAttestation: true to reject non-trust-anchored attestation.
+No CRL/OCSP (offline by design). android-safetynet is deprecated (prefer Play
+Integrity). Exports: StaticMetadataService, APPLE_WEBAUTHN_ROOT_CA_PEM,
+verifyAppleAttestation/verifyPackedAttestation/verifyFidoU2fAttestation/
+verifyAndroidKeyAttestation/verifyTpmAttestation/verifyAndroidSafetyNetAttestation,
+plus X.509 helpers (parseCert, verifyCertChain, publicKeyMatchesCOSE, ...) and a
+minimal DER reader.
+
+## Storage adapter
+
+Interface with four sections — users, credentials, challenges, sessions — each a
+set of async methods. MemoryStorageAdapter ships for dev/tests. find* methods
+return null when absent. publicKey is a Uint8Array.
+
+## Errors
+
+All errors extend WebAuthnError with a stable open-union `code` and a `statusCode`
+(400 input/verification, 401 auth/session, 500 config/storage). Subclasses:
+RegistrationError, AuthenticationError, VerificationError, ConfigurationError,
+StorageError, SessionError. Branch on `code`, not the message.
+
+## Honest scope
+
+Server-only (no browser/native client). Requires a secure context (HTTPS or
+localhost). enableMobileAttestation (default off) is a non-standard JSON path that
+does NOT do cryptographic WebAuthn attestation — use only with full client/
+transport control.
+
+## Key URLs
+
+- Docs: https://webauthn-server-buildkit-docs.aoneahsan.com
+- npm: https://www.npmjs.com/package/webauthn-server-buildkit
+- Source: https://github.com/aoneahsan/webauthn-server-buildkit

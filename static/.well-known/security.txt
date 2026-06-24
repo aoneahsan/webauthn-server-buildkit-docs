@@ -1,0 +1,8 @@
+# Security contact for webauthn-server-buildkit and its documentation site.
+# https://securitytxt.org
+
+Contact: mailto:aoneahsan@gmail.com
+Contact: https://aoneahsan.com
+Preferred-Languages: en
+Canonical: https://webauthn-server-buildkit-docs.aoneahsan.com/.well-known/security.txt
+Policy: https://github.com/aoneahsan/webauthn-server-buildkit/blob/main/SECURITY.md

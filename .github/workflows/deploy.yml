@@ -1,0 +1,59 @@
+name: Deploy docs to GitHub Pages
+
+# Builds the Docusaurus site and publishes it to GitHub Pages on every push
+# to main. Firebase Hosting is the other (manual) deploy target — see README.
+#
+# One-time setup by the repo owner (USER-ONLY):
+#   1. Settings → Pages → Source: "GitHub Actions".
+#   2. Add the custom domain (webauthn-server-buildkit-docs.aoneahsan.com) under
+#      Settings → Pages, or rely on static/CNAME (copied into build/ at build time).
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build
+        run: yarn build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

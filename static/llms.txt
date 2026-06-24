@@ -1,0 +1,58 @@
+# webauthn-server-buildkit
+
+> A comprehensive, framework-independent WebAuthn / FIDO2 / passkeys **server**
+> library for TypeScript and Node.js. It verifies registration and
+> authentication ceremonies, performs full per-format attestation verification
+> with FIDO Metadata Service (MDS) trust anchoring, mints encrypted session
+> tokens, and persists data through pluggable storage adapters. Secure by
+> default, zero framework lock-in, one runtime dependency (cbor-x).
+> Author: Ahsan Mahmood (https://aoneahsan.com). License: MIT.
+
+This file follows the https://llmstxt.org convention so language models can find
+the most useful, machine-readable entry points for this project.
+
+## What it does
+
+- WebAuthn registration ceremony: generate `PublicKeyCredentialCreationOptions`,
+  verify the attestation response (challenge, origin, RP-ID hash, flags,
+  signature, single-use challenge).
+- WebAuthn authentication ceremony: generate
+  `PublicKeyCredentialRequestOptions`, verify the assertion (signature, counter,
+  user-handle binding, algorithm pinning).
+- Attestation: `none`, `packed` (self + x5c), `fido-u2f`, `android-key`, `tpm`,
+  `android-safetynet`, and `apple` are cryptographically verified.
+  `attestationVerified: true` is reported only when trust-anchored (apple via a
+  bundled root CA; the rest via an RP-supplied FIDO MDS `MetadataService`).
+- Encrypted session tokens: AES-256-GCM with HKDF-SHA256 key derivation,
+  managed entirely behind the `WebAuthnServer` API.
+- Storage: a built-in in-memory adapter plus a `StorageAdapter` interface for
+  Postgres, Redis, MongoDB, or any backend.
+
+## Key URLs
+
+- Documentation home: https://webauthn-server-buildkit-docs.aoneahsan.com
+- Installation: https://webauthn-server-buildkit-docs.aoneahsan.com/getting-started/installation
+- Quick start: https://webauthn-server-buildkit-docs.aoneahsan.com/getting-started/quick-start
+- API reference (WebAuthnServer): https://webauthn-server-buildkit-docs.aoneahsan.com/api/webauthn-server
+- Configuration reference: https://webauthn-server-buildkit-docs.aoneahsan.com/api/configuration
+- Storage adapter reference: https://webauthn-server-buildkit-docs.aoneahsan.com/api/storage-adapter
+- Attestation guide: https://webauthn-server-buildkit-docs.aoneahsan.com/guides/attestation
+- Security model: https://webauthn-server-buildkit-docs.aoneahsan.com/guides/security-model
+- npm package: https://www.npmjs.com/package/webauthn-server-buildkit
+- Source code: https://github.com/aoneahsan/webauthn-server-buildkit
+
+## Honest scope notes
+
+- This is a **server** library. The browser side (`navigator.credentials`) and
+  the native side are out of scope; pair it with a WebAuthn client and, on
+  Capacitor, with `capacitor-biometric-authentication`.
+- WebAuthn requires a secure context (HTTPS, or `localhost` for development).
+- Attestation is offline by design: there is no CRL/OCSP revocation checking.
+- The optional `enableMobileAttestation` JSON path (default OFF) is non-standard
+  and does NOT perform cryptographic WebAuthn attestation — use it only when you
+  fully control the client and transport.
+
+## Author
+
+Ahsan Mahmood — https://aoneahsan.com · https://github.com/aoneahsan ·
+https://www.npmjs.com/~aoneahsan

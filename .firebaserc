@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "webauthn-server-buildkit-docs"
+  },
+  "targets": {},
+  "etags": {}
+}
