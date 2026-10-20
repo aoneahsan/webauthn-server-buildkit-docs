@@ -19,7 +19,7 @@ const config: Config = {
     'A framework-independent TypeScript WebAuthn / FIDO2 / passkeys server library — secure by default.',
   favicon: 'img/favicon.svg',
 
-  // Production URL — served from Firebase Hosting + GitHub Pages.
+  // Production URL — served from GitHub Pages.
   url: SITE_URL,
   baseUrl: '/',
 
@@ -153,7 +153,10 @@ const config: Config = {
             '**/_*/**',
             '**/*.test.{js,jsx,ts,tsx}',
             '**/__tests__/**',
+            'AGENTS.md',
+            'CLAUDE.md',
             'MANUAL-TASKS.md',
+            'tracking/**',
           ],
           routeBasePath: '/',
           editUrl: `${DOCS_REPO_URL}/edit/main/`,

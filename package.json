@@ -2,7 +2,7 @@
   "name": "webauthn-server-buildkit-docs",
   "version": "0.1.0",
   "private": true,
-  "description": "Public documentation site for webauthn-server-buildkit (https://www.npmjs.com/package/webauthn-server-buildkit) — a framework-independent TypeScript WebAuthn/FIDO2 server library. Built with Docusaurus, deployed to Firebase Hosting + GitHub Pages.",
+  "description": "Public Docusaurus documentation for webauthn-server-buildkit, deployed through GitHub Pages.",
   "author": {
     "name": "Ahsan Mahmood",
     "email": "aoneahsan@gmail.com",
@@ -26,8 +26,7 @@
     "serve": "docusaurus serve --port 5973",
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
-    "typecheck": "tsc --noEmit",
-    "firebase:deploy:preview": "yarn build && npx -y firebase-tools@latest hosting:channel:deploy preview --project webauthn-server-buildkit-docs --expires 7d"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@docusaurus/core": "^3.10.1",
@@ -43,6 +42,7 @@
     "@docusaurus/module-type-aliases": "^3.10.1",
     "@docusaurus/tsconfig": "^3.10.1",
     "@docusaurus/types": "^3.10.1",
+    "@types/react": "^19.2.17",
     "typescript": "~6.0.3"
   },
   "browserslist": {

@@ -15,7 +15,7 @@ keywords:
 
 **webauthn-server-buildkit is a framework-independent TypeScript library that implements the server (relying party) side of WebAuthn / FIDO2 / passkeys for Node.js.** It generates registration and authentication ceremony options, verifies the browser's response cryptographically, performs full per-format attestation verification with FIDO Metadata Service trust anchoring, mints encrypted session tokens, and persists data through pluggable storage adapters — all without depending on any web framework.
 
-It is published on npm as [`webauthn-server-buildkit`](https://www.npmjs.com/package/webauthn-server-buildkit) and is MIT-licensed. The current version is **2.3.0**.
+It is published on npm as [`webauthn-server-buildkit`](https://www.npmjs.com/package/webauthn-server-buildkit) and is MIT-licensed. The current version is **2.3.2**.
 
 ```bash
 npm install webauthn-server-buildkit
